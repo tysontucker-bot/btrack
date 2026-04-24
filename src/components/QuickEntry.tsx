@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import type { Student, Behavior, Antecedent, Consequence, BehaviorFunction, BehaviorEntry } from '../types';
+import type { Student, Behavior, Antecedent, Response, Outcome, BehaviorEntry } from '../types';
 
 const BEHAVIORS: Behavior[] = ['Refusal', 'Aggression', 'Elopement', 'Disruption'];
-const ANTECEDENTS: Antecedent[] = ['Demand Placed', 'Denied Access', 'Transition', 'Sensory Input'];
-const CONSEQUENCES: Consequence[] = ['Redirect', 'Removal', 'Loss Item', 'Break', 'Loss Privilege', 'Ignore'];
-const FUNCTIONS: BehaviorFunction[] = ['Attention', 'Escape', 'Tangible', 'Sensory', 'Unknown'];
+const ANTECEDENTS: Antecedent[] = ['Transition', 'Denied Item', 'Work Demand', 'Peer Conflict'];
+const RESPONSES: Response[] = ['Redirect', 'Break', 'Loss Privilege', 'Ignore'];
+const OUTCOMES: Outcome[] = ['Complied', 'Escalated', 'Needed Removal'];
 
 interface QuickEntryProps {
   student: Student;
@@ -55,25 +55,25 @@ function SectionGrid<T extends string>({ items, selected, onSelect, accentColor,
 export function QuickEntry({ student, onSave, onBack }: QuickEntryProps) {
   const [selectedBehavior, setSelectedBehavior] = useState<Behavior | null>(null);
   const [selectedAntecedent, setSelectedAntecedent] = useState<Antecedent | null>(null);
-  const [selectedConsequence, setSelectedConsequence] = useState<Consequence | null>(null);
-  const [selectedFunction, setSelectedFunction] = useState<BehaviorFunction | null>(null);
+  const [selectedResponse, setSelectedResponse] = useState<Response | null>(null);
+  const [selectedOutcome, setSelectedOutcome] = useState<Outcome | null>(null);
 
   function handleSelectBehavior(behavior: Behavior) {
     setSelectedBehavior(behavior);
     setSelectedAntecedent(null);
-    setSelectedConsequence(null);
-    setSelectedFunction(null);
+    setSelectedResponse(null);
+    setSelectedOutcome(null);
   }
 
   function handleSelectAntecedent(antecedent: Antecedent) {
     setSelectedAntecedent(antecedent);
-    setSelectedConsequence(null);
-    setSelectedFunction(null);
+    setSelectedResponse(null);
+    setSelectedOutcome(null);
   }
 
-  function handleSelectConsequence(consequence: Consequence) {
-    setSelectedConsequence(consequence);
-    setSelectedFunction(null);
+  function handleSelectResponse(response: Response) {
+    setSelectedResponse(response);
+    setSelectedOutcome(null);
   }
 
   function handleSave() {
@@ -82,8 +82,8 @@ export function QuickEntry({ student, onSave, onBack }: QuickEntryProps) {
       student,
       behavior: selectedBehavior,
       antecedent: selectedAntecedent,
-      consequence: selectedConsequence,
-      behaviorFunction: selectedFunction,
+      response: selectedResponse,
+      outcome: selectedOutcome,
       timestamp: new Date().toISOString(),
     });
   }
@@ -142,31 +142,31 @@ export function QuickEntry({ student, onSave, onBack }: QuickEntryProps) {
 
       {selectedAntecedent && (
         <>
-          <p style={sectionLabelStyle}>Consequence</p>
+          <p style={sectionLabelStyle}>Response</p>
           <SectionGrid
-            items={CONSEQUENCES}
-            selected={selectedConsequence}
-            onSelect={handleSelectConsequence}
+            items={RESPONSES}
+            selected={selectedResponse}
+            onSelect={handleSelectResponse}
             accentColor="#8b5cf6"
             accentBg="#ede9fe"
           />
         </>
       )}
 
-      {selectedConsequence && (
+      {selectedResponse && (
         <>
-          <p style={sectionLabelStyle}>Function</p>
+          <p style={sectionLabelStyle}>Outcome</p>
           <SectionGrid
-            items={FUNCTIONS}
-            selected={selectedFunction}
-            onSelect={setSelectedFunction}
+            items={OUTCOMES}
+            selected={selectedOutcome}
+            onSelect={setSelectedOutcome}
             accentColor="#0ea5e9"
             accentBg="#e0f2fe"
           />
         </>
       )}
 
-      {selectedFunction && (
+      {selectedOutcome && (
         <button
           onClick={handleSave}
           style={{
