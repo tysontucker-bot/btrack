@@ -58,6 +58,24 @@ export function QuickEntry({ student, onSave, onBack }: QuickEntryProps) {
   const [selectedConsequence, setSelectedConsequence] = useState<Consequence | null>(null);
   const [selectedFunction, setSelectedFunction] = useState<BehaviorFunction | null>(null);
 
+  function handleSelectBehavior(behavior: Behavior) {
+    setSelectedBehavior(behavior);
+    setSelectedAntecedent(null);
+    setSelectedConsequence(null);
+    setSelectedFunction(null);
+  }
+
+  function handleSelectAntecedent(antecedent: Antecedent) {
+    setSelectedAntecedent(antecedent);
+    setSelectedConsequence(null);
+    setSelectedFunction(null);
+  }
+
+  function handleSelectConsequence(consequence: Consequence) {
+    setSelectedConsequence(consequence);
+    setSelectedFunction(null);
+  }
+
   function handleSave() {
     if (!selectedBehavior) return;
     onSave({
@@ -104,56 +122,69 @@ export function QuickEntry({ student, onSave, onBack }: QuickEntryProps) {
       <SectionGrid
         items={BEHAVIORS}
         selected={selectedBehavior}
-        onSelect={setSelectedBehavior}
+        onSelect={handleSelectBehavior}
         accentColor="#ef4444"
         accentBg="#fee2e2"
       />
 
-      <p style={sectionLabelStyle}>Antecedent</p>
-      <SectionGrid
-        items={ANTECEDENTS}
-        selected={selectedAntecedent}
-        onSelect={setSelectedAntecedent}
-        accentColor="#f59e0b"
-        accentBg="#fef3c7"
-      />
+      {selectedBehavior && (
+        <>
+          <p style={sectionLabelStyle}>Antecedent</p>
+          <SectionGrid
+            items={ANTECEDENTS}
+            selected={selectedAntecedent}
+            onSelect={handleSelectAntecedent}
+            accentColor="#f59e0b"
+            accentBg="#fef3c7"
+          />
+        </>
+      )}
 
-      <p style={sectionLabelStyle}>Consequence</p>
-      <SectionGrid
-        items={CONSEQUENCES}
-        selected={selectedConsequence}
-        onSelect={setSelectedConsequence}
-        accentColor="#8b5cf6"
-        accentBg="#ede9fe"
-      />
+      {selectedAntecedent && (
+        <>
+          <p style={sectionLabelStyle}>Consequence</p>
+          <SectionGrid
+            items={CONSEQUENCES}
+            selected={selectedConsequence}
+            onSelect={handleSelectConsequence}
+            accentColor="#8b5cf6"
+            accentBg="#ede9fe"
+          />
+        </>
+      )}
 
-      <p style={sectionLabelStyle}>Function</p>
-      <SectionGrid
-        items={FUNCTIONS}
-        selected={selectedFunction}
-        onSelect={setSelectedFunction}
-        accentColor="#0ea5e9"
-        accentBg="#e0f2fe"
-      />
+      {selectedConsequence && (
+        <>
+          <p style={sectionLabelStyle}>Function</p>
+          <SectionGrid
+            items={FUNCTIONS}
+            selected={selectedFunction}
+            onSelect={setSelectedFunction}
+            accentColor="#0ea5e9"
+            accentBg="#e0f2fe"
+          />
+        </>
+      )}
 
-      <button
-        onClick={handleSave}
-        disabled={!selectedBehavior}
-        style={{
-          width: '100%',
-          padding: '20px',
-          fontSize: '1.25rem',
-          fontWeight: 'bold',
-          borderRadius: '12px',
-          border: 'none',
-          marginTop: '32px',
-          background: selectedBehavior ? '#22c55e' : '#d1d5db',
-          color: selectedBehavior ? '#fff' : '#9ca3af',
-          cursor: selectedBehavior ? 'pointer' : 'not-allowed',
-        }}
-      >
-        SAVE
-      </button>
+      {selectedFunction && (
+        <button
+          onClick={handleSave}
+          style={{
+            width: '100%',
+            padding: '20px',
+            fontSize: '1.25rem',
+            fontWeight: 'bold',
+            borderRadius: '12px',
+            border: 'none',
+            marginTop: '32px',
+            background: '#22c55e',
+            color: '#fff',
+            cursor: 'pointer',
+          }}
+        >
+          SAVE
+        </button>
+      )}
     </div>
   );
 }
