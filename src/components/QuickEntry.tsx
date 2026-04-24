@@ -59,6 +59,11 @@ export function QuickEntry({ student, onSave, onBack }: QuickEntryProps) {
   const [selectedOutcome, setSelectedOutcome] = useState<Outcome | null>(null);
 
   function handleSelectBehavior(behavior: Behavior) {
+    if (behavior !== selectedBehavior) {
+      setSelectedAntecedent(null);
+      setSelectedResponse(null);
+      setSelectedOutcome(null);
+    }
     setSelectedBehavior(behavior);
   }
 
