@@ -59,21 +59,24 @@ export function QuickEntry({ student, onSave, onBack }: QuickEntryProps) {
   const [selectedOutcome, setSelectedOutcome] = useState<Outcome | null>(null);
 
   function handleSelectBehavior(behavior: Behavior) {
+    if (behavior !== selectedBehavior) {
+      setSelectedAntecedent(null);
+      setSelectedResponse(null);
+      setSelectedOutcome(null);
+    }
     setSelectedBehavior(behavior);
-    setSelectedAntecedent(null);
-    setSelectedResponse(null);
-    setSelectedOutcome(null);
   }
 
   function handleSelectAntecedent(antecedent: Antecedent) {
-    setSelectedAntecedent(antecedent);
-    setSelectedResponse(null);
-    setSelectedOutcome(null);
+    setSelectedAntecedent(antecedent === selectedAntecedent ? null : antecedent);
   }
 
   function handleSelectResponse(response: Response) {
-    setSelectedResponse(response);
-    setSelectedOutcome(null);
+    setSelectedResponse(response === selectedResponse ? null : response);
+  }
+
+  function handleSelectOutcome(outcome: Outcome) {
+    setSelectedOutcome(outcome === selectedOutcome ? null : outcome);
   }
 
   function handleSave() {
@@ -137,11 +140,7 @@ export function QuickEntry({ student, onSave, onBack }: QuickEntryProps) {
             accentColor="#f59e0b"
             accentBg="#fef3c7"
           />
-        </>
-      )}
 
-      {selectedAntecedent && (
-        <>
           <p style={sectionLabelStyle}>Response</p>
           <SectionGrid
             items={RESPONSES}
@@ -150,40 +149,34 @@ export function QuickEntry({ student, onSave, onBack }: QuickEntryProps) {
             accentColor="#8b5cf6"
             accentBg="#ede9fe"
           />
-        </>
-      )}
 
-      {selectedResponse && (
-        <>
           <p style={sectionLabelStyle}>Outcome</p>
           <SectionGrid
             items={OUTCOMES}
             selected={selectedOutcome}
-            onSelect={setSelectedOutcome}
+            onSelect={handleSelectOutcome}
             accentColor="#0ea5e9"
             accentBg="#e0f2fe"
           />
-        </>
-      )}
 
-      {selectedOutcome && (
-        <button
-          onClick={handleSave}
-          style={{
-            width: '100%',
-            padding: '20px',
-            fontSize: '1.25rem',
-            fontWeight: 'bold',
-            borderRadius: '12px',
-            border: 'none',
-            marginTop: '32px',
-            background: '#22c55e',
-            color: '#fff',
-            cursor: 'pointer',
-          }}
-        >
-          SAVE
-        </button>
+          <button
+            onClick={handleSave}
+            style={{
+              width: '100%',
+              padding: '20px',
+              fontSize: '1.25rem',
+              fontWeight: 'bold',
+              borderRadius: '12px',
+              border: 'none',
+              marginTop: '32px',
+              background: '#22c55e',
+              color: '#fff',
+              cursor: 'pointer',
+            }}
+          >
+            SAVE
+          </button>
+        </>
       )}
     </div>
   );
