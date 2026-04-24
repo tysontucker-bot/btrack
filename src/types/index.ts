@@ -2,17 +2,17 @@ export type Student = 'Ronan' | 'Audrina' | 'Caleb' | 'Ayden' | 'Jaxon' | 'Jacob
 
 export type Behavior = 'Refusal' | 'Aggression' | 'Elopement' | 'Disruption';
 
-export type Antecedent = 'Demand Placed' | 'Denied Access' | 'Transition' | 'Sensory Input';
+export type Antecedent = 'Transition' | 'Denied Item' | 'Work Demand' | 'Peer Conflict';
 
-export type Consequence = 'Redirect' | 'Removal' | 'Loss Item' | 'Break' | 'Loss Privilege' | 'Ignore';
+export type Response = 'Redirect' | 'Break' | 'Loss Privilege' | 'Ignore';
 
-export type BehaviorFunction = 'Attention' | 'Escape' | 'Tangible' | 'Sensory' | 'Unknown';
+export type Outcome = 'Complied' | 'Escalated' | 'Needed Removal';
 
 export interface BehaviorEntry {
   student: Student;
   behavior: Behavior;
   antecedent: Antecedent | null;
-  consequence: Consequence | null;
-  behaviorFunction: BehaviorFunction | null;
+  response: Response | null;
+  outcome: Outcome | null;
   timestamp: string;
 }
